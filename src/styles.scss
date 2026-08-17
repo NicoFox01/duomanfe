@@ -1,0 +1,12 @@
+@use "tailwindcss";
+
+@theme {
+  --color-primary: #f2d20b;
+  --color-secondary: #d97a1d;
+  --color-dark-orange: #c75b1c;
+  --color-ink: #050505;
+  --color-surface: #ffffff;
+  --color-muted: #b8b9b5;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
