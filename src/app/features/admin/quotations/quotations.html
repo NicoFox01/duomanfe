@@ -1,0 +1,159 @@
+<div>
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Cotizaciones</h1>
+      <p class="mt-1 text-muted">Gestioná las solicitudes de presupuesto recibidas.</p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <input
+        type="search"
+        class="input w-64"
+        placeholder="Buscar por nombre, empresa o teléfono"
+        (input)="onSearchInput($event)"
+      />
+      <select class="input w-56" [value]="statusFilter()" (change)="setStatusFilter(selectedValue($event))">
+        <option value="">Todos los estados</option>
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="mt-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+      {{ error() }}
+    </p>
+  }
+
+  @if (loading()) {
+    <div class="card mt-6 p-8 text-center text-muted">Cargando cotizaciones...</div>
+  } @else if (quotations().length === 0) {
+    <div class="card mt-6 p-10 text-center">
+      <p class="font-semibold">Sin cotizaciones</p>
+      <p class="mt-1 text-sm text-muted">No hay solicitudes para los filtros seleccionados.</p>
+    </div>
+  } @else {
+    <div class="card mt-6 overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Contacto</th>
+            <th>Ubicación</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (q of quotations(); track q.id) {
+            <tr>
+              <td class="font-semibold">
+                {{ q.full_name }}
+                <p class="text-xs font-normal text-muted">{{ q.company }}</p>
+              </td>
+              <td>
+                {{ q.email }}
+                <p class="text-xs text-muted">{{ q.phone }}</p>
+              </td>
+              <td>{{ q.location }}</td>
+              <td class="whitespace-nowrap">{{ q.created_at | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                <select
+                  class="status-select"
+                  [value]="q.status"
+                  (change)="changeStatus(q, selectedValue($event))"
+                >
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    class="btn btn-outline !px-3 !py-1.5 text-xs"
+                    (click)="detail.set(q)"
+                  >
+                    Ver detalle
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-outline !border-red-300 !px-3 !py-1.5 text-xs !text-red-600 hover:!bg-red-50"
+                    (click)="deleteQuotation(q)"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (detail(); as q) {
+  <div
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    (click)="detail.set(null)"
+    (keydown.escape)="detail.set(null)"
+  >
+    <div class="card max-h-[90vh] w-full max-w-xl overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="flex items-start justify-between gap-4 p-6 pb-0 sm:p-8 sm:pb-0">
+        <div>
+          <h2 class="text-xl font-extrabold">{{ q.full_name }}</h2>
+          <p class="mt-1 text-sm text-muted">{{ q.created_at | date: 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <button type="button" class="rounded-full p-1.5 text-muted transition hover:bg-surface-2" aria-label="Cerrar" (click)="detail.set(null)">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 p-6 sm:p-8">
+        <dl class="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+          <div>
+            <dt class="font-semibold text-muted">Email</dt>
+            <dd>{{ q.email }}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-muted">Teléfono</dt>
+            <dd>{{ q.phone }}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-muted">Empresa</dt>
+            <dd>{{ q.company ?? '—' }}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-muted">Ubicación</dt>
+            <dd>{{ q.location }}</dd>
+          </div>
+        </dl>
+
+        <div>
+          <p class="font-semibold text-muted">Servicios solicitados</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            @for (service of q.services; track service) {
+              <span class="rounded-full border border-line-strong bg-surface-2 px-3 py-1 text-xs">{{ service }}</span>
+            }
+          </div>
+        </div>
+
+        @if (q.notes) {
+          <div>
+            <p class="font-semibold text-muted">Observaciones</p>
+            <p class="mt-1 whitespace-pre-line text-sm">{{ q.notes }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

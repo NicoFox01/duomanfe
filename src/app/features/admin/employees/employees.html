@@ -1,0 +1,119 @@
+<div>
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Empleados</h1>
+      <p class="mt-1 text-muted">Directorio del equipo operativo de DUOMAN.</p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <input
+        type="search"
+        class="input w-56"
+        placeholder="Buscar por nombre o rol"
+        (input)="onSearchInput($event)"
+      />
+      <button type="button" class="btn btn-primary" (click)="toggleForm()">
+        {{ showForm() ? 'Cancelar' : '+ Nuevo empleado' }}
+      </button>
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="mt-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+      {{ error() }}
+    </p>
+  }
+
+  @if (showForm()) {
+    <form class="card mt-6 grid gap-4 p-6 sm:grid-cols-2" [formGroup]="form" (ngSubmit)="onCreateSubmit()" novalidate>
+      <div>
+        <label class="label" for="em-name">Nombre y apellido *</label>
+        <input id="em-name" class="input" formControlName="full_name" type="text" placeholder="Ej: Juan Pérez" />
+        @if (form.controls.full_name.invalid && form.controls.full_name.touched) {
+          <p class="field-error">Ingresá el nombre completo.</p>
+        }
+      </div>
+      <div>
+        <label class="label" for="em-role">Rol *</label>
+        <input id="em-role" class="input" formControlName="role" type="text" placeholder="Ej: Electricista" />
+        @if (form.controls.role.invalid && form.controls.role.touched) {
+          <p class="field-error">Ingresá el rol.</p>
+        }
+      </div>
+      <div>
+        <label class="label" for="em-phone">Teléfono *</label>
+        <input id="em-phone" class="input" formControlName="phone" type="tel" placeholder="Ej: 11 2345 6789" />
+        @if (form.controls.phone.invalid && form.controls.phone.touched) {
+          <p class="field-error">Ingresá un teléfono.</p>
+        }
+      </div>
+      <div>
+        <label class="label" for="em-email">Email (opcional)</label>
+        <input id="em-email" class="input" formControlName="email" type="email" placeholder="tumail@ejemplo.com" />
+      </div>
+      <div class="sm:col-span-2">
+        <label class="label" for="em-specialties">Especialidades (separadas por coma, opcional)</label>
+        <input id="em-specialties" class="input" formControlName="specialties" type="text" placeholder="Ej: Eléctrica, Baja tensión" />
+      </div>
+      <div class="sm:col-span-2">
+        <button type="submit" class="btn btn-primary" [disabled]="creating()">
+          {{ creating() ? 'Guardando...' : 'Guardar empleado' }}
+        </button>
+      </div>
+    </form>
+  }
+
+  @if (loading()) {
+    <div class="card mt-6 p-8 text-center text-muted">Cargando empleados...</div>
+  } @else if (employees().length === 0) {
+    <div class="card mt-6 p-10 text-center">
+      <p class="font-semibold">Sin empleados</p>
+      <p class="mt-1 text-sm text-muted">Todavía no cargaste personal en el directorio.</p>
+    </div>
+  } @else {
+    <div class="card mt-6 overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Contacto</th>
+            <th>Especialidades</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of employees(); track e.id) {
+            <tr>
+              <td class="font-semibold">{{ e.full_name }}</td>
+              <td>{{ e.role }}</td>
+              <td>
+                {{ e.phone }}
+                <p class="text-xs text-muted">{{ e.email }}</p>
+              </td>
+              <td>
+                <div class="flex flex-wrap gap-1.5">
+                  @for (specialty of e.specialties; track specialty) {
+                    <span class="rounded-full border border-line-strong bg-surface-2 px-2.5 py-0.5 text-xs">{{ specialty }}</span>
+                  }
+                  @if (e.specialties.length === 0) {
+                    <span class="text-xs text-muted">—</span>
+                  }
+                </div>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-outline !border-red-300 !px-3 !py-1.5 text-xs !text-red-600 hover:!bg-red-50"
+                  (click)="deleteEmployee(e)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

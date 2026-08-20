@@ -1,0 +1,62 @@
+<div>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Dashboard</h1>
+      <p class="mt-1 text-muted">Resumen en tiempo real de la actividad de DUOMAN.</p>
+    </div>
+    <button type="button" class="btn btn-outline" (click)="refresh()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="h-4 w-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+      Actualizar
+    </button>
+  </div>
+
+  @if (error()) {
+    <p class="mt-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+      {{ error() }}
+    </p>
+  }
+
+  @if (loading()) {
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      @for (_ of [1, 2, 3, 4]; track $index) {
+        <div class="stat-card animate-pulse">
+          <div class="h-4 w-24 rounded bg-surface-2"></div>
+          <div class="mt-4 h-10 w-16 rounded bg-surface-2"></div>
+        </div>
+      }
+    </div>
+  } @else if (metrics(); as m) {
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <a routerLink="/admin/cotizaciones" class="stat-card block transition hover:border-secondary">
+        <p class="text-sm font-semibold text-muted">Cotizaciones nuevas</p>
+        <p class="mt-3 text-4xl font-extrabold">{{ m.quotations.nuevas }}</p>
+        <p class="mt-1 text-xs text-muted">Estado: Pendiente</p>
+      </a>
+      <a routerLink="/admin/cotizaciones" class="stat-card block transition hover:border-secondary">
+        <p class="text-sm font-semibold text-muted">Cotizaciones en proceso</p>
+        <p class="mt-3 text-4xl font-extrabold">{{ m.quotations.en_proceso }}</p>
+        <p class="mt-1 text-xs text-muted">Contactado / Cotización presentada</p>
+      </a>
+      <a routerLink="/admin/postulaciones" class="stat-card block transition hover:border-secondary">
+        <p class="text-sm font-semibold text-muted">Postulaciones nuevas</p>
+        <p class="mt-3 text-4xl font-extrabold">{{ m.applications.nuevas }}</p>
+        <p class="mt-1 text-xs text-muted">Estado: Postulado</p>
+      </a>
+      <a routerLink="/admin/postulaciones" class="stat-card block transition hover:border-secondary">
+        <p class="text-sm font-semibold text-muted">Postulaciones en proceso</p>
+        <p class="mt-3 text-4xl font-extrabold">{{ m.applications.en_proceso }}</p>
+        <p class="mt-1 text-xs text-muted">Visto / Contactado / Entrevistado</p>
+      </a>
+    </div>
+
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+      <a routerLink="/admin/empleados" class="stat-card block transition hover:border-secondary">
+        <p class="text-sm font-semibold text-muted">Empleados activos</p>
+        <p class="mt-3 text-4xl font-extrabold">{{ m.employees.activos }}</p>
+        <p class="mt-1 text-xs text-muted">Equipo operativo</p>
+      </a>
+    </div>
+  }
+</div>

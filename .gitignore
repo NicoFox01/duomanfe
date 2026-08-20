@@ -38,6 +38,14 @@ testem.log
 /typings
 __screenshots__/
 
+# Env files (previene accidentes con .env.local, .env.prod, etc.)
+.env*
+!.env.example
+
+# Vercel CLI
+.vercel/
+
 # System files
 .DS_Store
 Thumbs.db
+desktop.ini

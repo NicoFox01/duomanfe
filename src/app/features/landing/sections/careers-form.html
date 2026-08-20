@@ -1,0 +1,220 @@
+<section id="trabaja-con-nosotros" class="scroll-mt-20 bg-surface py-20 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div class="lg:sticky lg:top-24">
+        <p class="text-sm font-bold uppercase tracking-wider text-secondary">Sumate al equipo</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+          Trabajá con nosotros
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-muted">
+          Buscamos profesionales responsables y comprometidos que quieran crecer en un equipo
+          que valora el buen trabajo.
+        </p>
+
+        <ul class="mt-8 space-y-4">
+          <li class="flex items-start gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4.5 w-4.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15c-2.743 0-5.326-.221-7.577-.633a2.244 2.244 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+              </svg>
+            </span>
+            <div>
+              <p class="font-semibold">Trabajo estable y en blanco</p>
+              <p class="text-sm text-muted">Relación laboral clara y como corresponde.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4.5 w-4.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-6-6h12M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" />
+              </svg>
+            </span>
+            <div>
+              <p class="font-semibold">Oportunidades de crecimiento</p>
+              <p class="text-sm text-muted">Capacitación y desarrollo dentro del equipo.</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4.5 w-4.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+              </svg>
+            </span>
+            <div>
+              <p class="font-semibold">Amplia cobertura</p>
+              <p class="text-sm text-muted">Trabajos en CABA y todo el Gran Buenos Aires.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      @if (submitted()) {
+        <div class="card flex flex-col items-center p-10 text-center sm:p-14">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor" class="h-8 w-8 text-primary">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+          </div>
+          <h3 class="mt-6 text-2xl font-extrabold">¡Postulación enviada!</h3>
+          <p class="mt-3 max-w-md text-muted">
+            Recibimos tu CV y vamos a revisarlo con atención. Si hay un match, el equipo de
+            RR. HH. te va a contactar.
+          </p>
+          <button type="button" class="btn btn-outline mt-8" (click)="resetForm()">
+            Enviar otra postulación
+          </button>
+        </div>
+      } @else {
+        <form class="card p-6 sm:p-8" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="label" for="cf-name">Nombre y apellido *</label>
+              <input
+                id="cf-name"
+                class="input"
+                formControlName="full_name"
+                type="text"
+                placeholder="Ej: María Gómez"
+                autocomplete="name"
+              />
+              @if (form.controls.full_name.invalid && form.controls.full_name.touched) {
+                <p class="field-error">Ingresá tu nombre completo.</p>
+              }
+            </div>
+
+            <div>
+              <label class="label" for="cf-phone">Teléfono *</label>
+              <input
+                id="cf-phone"
+                class="input"
+                formControlName="phone"
+                type="tel"
+                placeholder="Ej: 11 2345 6789"
+                autocomplete="tel"
+              />
+              @if (form.controls.phone.invalid && form.controls.phone.touched) {
+                <p class="field-error">Ingresá un teléfono de contacto.</p>
+              }
+            </div>
+
+            <div>
+              <label class="label" for="cf-email">Email *</label>
+              <input
+                id="cf-email"
+                class="input"
+                formControlName="email"
+                type="email"
+                placeholder="tumail@ejemplo.com"
+                autocomplete="email"
+              />
+              @if (form.controls.email.invalid && form.controls.email.touched) {
+                <p class="field-error">Ingresá un email válido.</p>
+              }
+            </div>
+
+            <div>
+              <label class="label" for="cf-zone">Zona de residencia *</label>
+              <select id="cf-zone" class="input" formControlName="zone">
+                <option value="" disabled selected>Elegí tu zona</option>
+                @for (zone of zones; track zone) {
+                  <option [value]="zone">{{ zone }}</option>
+                }
+              </select>
+              @if (form.controls.zone.invalid && form.controls.zone.touched) {
+                <p class="field-error">Elegí tu zona de residencia.</p>
+              }
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="label" for="cf-role">Rol que te interesa *</label>
+              <select id="cf-role" class="input" formControlName="target_role">
+                <option value="" disabled selected>Elegí un rol</option>
+                @for (role of roles; track role) {
+                  <option [value]="role">{{ role }}</option>
+                }
+              </select>
+              @if (form.controls.target_role.invalid && form.controls.target_role.touched) {
+                <p class="field-error">Elegí el rol que te interesa.</p>
+              }
+            </div>
+          </div>
+
+          <h4 class="mt-8 text-sm font-bold uppercase tracking-wider text-secondary">Tu CV</h4>
+          <p class="mt-1 text-sm text-muted">Formato PDF, DOC o DOCX · Máximo 5 MB.</p>
+
+          @if (!file()) {
+            <div
+              class="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-line-strong bg-surface-2/50 px-6 py-10 text-center transition hover:border-secondary"
+              (dragover)="$event.preventDefault()"
+              (drop)="onFileDropped($event)"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-10 w-10 text-secondary">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+              </svg>
+              <p class="mt-4 text-sm font-semibold">
+                Arrastrá tu CV acá o
+                <label
+                  for="cf-file"
+                  class="cursor-pointer font-bold text-secondary underline decoration-secondary/40 underline-offset-4 hover:decoration-secondary"
+                >buscá el archivo</label>
+              </p>
+              <input
+                id="cf-file"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                class="sr-only"
+                (change)="onFilePicked($event)"
+              />
+            </div>
+          } @else {
+            <div class="mt-4 flex items-center justify-between gap-4 rounded-xl border border-line bg-surface-2/50 px-4 py-4">
+              <div class="flex min-w-0 items-center gap-3">
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-base">📄</span>
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-semibold">{{ file()?.name }}</p>
+                  <p class="text-xs text-muted">{{ fileSizeLabel(file()!.size) }}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="shrink-0 rounded-lg p-2 text-muted transition hover:bg-surface-2 hover:text-ink"
+                aria-label="Quitar archivo"
+                (click)="removeFile()"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          }
+
+          @if (fileError()) {
+            <p class="mt-3 text-sm text-red-600" role="alert">{{ fileError() }}</p>
+          }
+
+          <input class="hidden" formControlName="website" type="text" aria-hidden="true" tabindex="-1" autocomplete="off" />
+
+          @if (error()) {
+            <p class="mt-5 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+              {{ error() }}
+            </p>
+          }
+
+          <div class="mt-8">
+            <button type="submit" class="btn btn-primary w-full sm:w-auto" [disabled]="submitting()">
+              @if (submitting()) {
+                <svg class="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                Enviando postulación...
+              } @else {
+                Enviar postulación
+              }
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+</section>
